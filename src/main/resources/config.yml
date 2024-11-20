@@ -1,0 +1,5 @@
+config-load-holder: 不用管这行配置
+# 插件前缀
+plugin-prefix: "&b[TowerDefense]"
+# 选择地图GUI标题,技术问题暂时不允许更改...
+select-map-gui-title: "&2选择地图"

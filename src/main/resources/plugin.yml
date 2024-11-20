@@ -1,0 +1,9 @@
+name: TowerDefense
+version: '${project.version}'
+main: top.blug.towerdefense.Main
+api-version: 1.21
+
+commands:
+  towerdefense:
+    description: TowerDefense插件主命令
+    aliases: [td]
