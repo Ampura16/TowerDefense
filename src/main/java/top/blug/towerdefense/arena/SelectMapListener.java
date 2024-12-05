@@ -26,35 +26,30 @@ public class SelectMapListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // 确保只处理选择地图的 GUI
         if (event.getView().getTitle().equals(guiTitle)) {
-            event.setCancelled(true); // 取消默认行为
+            event.setCancelled(true);
 
-            ItemStack clickedItem = event.getCurrentItem(); // 获取被点击的物品
+            ItemStack clickedItem = event.getCurrentItem();
             if (clickedItem == null || !clickedItem.hasItemMeta() || !clickedItem.getItemMeta().hasDisplayName()) {
-                return; // 如果没有物品或没有显示名称，则返回
+                return;
             }
 
-            String arenaName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName()); // 获取地图名称
-            Player player = (Player) event.getWhoClicked(); // 获取点击的玩家
+            String arenaName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
+            Player player = (Player) event.getWhoClicked();
 
-            // System.out.println("点击的地图名称: " + arenaName); // 调试信息
-
-            Arena selectedArena = getArenaByName(arenaName); // 根据名称获取对应的地图
-
-            // 打印当前 arenaList 中的所有地图名称
-            for (Arena arena : arenaList) {
-                // System.out.println("已加载地图名称: " + arena.getName());
-            }
-
+            Arena selectedArena = getArenaByName(arenaName);
             if (selectedArena != null) {
-                // 将玩家添加到地图队列
-                plugin.getMapManager().addPlayerToQueue(player, selectedArena);
-
-                player.closeInventory(); // 关闭选择地图的界面
-                player.sendMessage(pluginPrefix + ChatColor.GOLD + " 你可以输入 /td leave 离开当前队列.");
+                try {
+                    plugin.getMapManager().addPlayerToQueue(player, selectedArena);
+                    player.closeInventory();
+                    player.sendMessage(pluginPrefix + ChatColor.GOLD + " 你可以输入 /td leave 离开当前队列.");
+                } catch (Exception e) {
+                    player.sendMessage(ChatColor.RED + "加入队列时出现问题，请重试.");
+                    plugin.getLogger().severe("玩家尝试加入游戏时发生错误: " + e.getMessage());
+                }
             } else {
                 player.sendMessage(ChatColor.RED + "未找到该地图.");
+                player.sendMessage(ChatColor.YELLOW + "请检查地图名称是否正确或确保地图已加载.");
             }
         }
     }

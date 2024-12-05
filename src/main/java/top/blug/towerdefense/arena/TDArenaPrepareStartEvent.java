@@ -44,28 +44,30 @@ public class TDArenaPrepareStartEvent extends Event {
 
             @Override
             public void run() {
-                // 检查当前队列玩家数是否满足 min-player
                 if (players.size() < arena.getMinPlayer()) {
-                    cancel(); // 中止任务
+                    cancel();
                     players.forEach(player -> player.sendMessage(ChatColor.RED + "游戏因人数不足而取消."));
                     return;
                 }
 
                 if (timeLeft > 0) {
-                    // 向所有玩家发送倒计时消息
-                    for (Player player : players) {
-                        player.sendMessage(ChatColor.YELLOW + "游戏将在 " + timeLeft + " 秒后开始...");
-                    }
+                    players.forEach(player -> player.sendMessage(ChatColor.YELLOW + "游戏将在 " + timeLeft + " 秒后开始..."));
                     timeLeft--;
                 } else {
-                    // 倒计时完成，开始比赛的逻辑可以在这里添加
-                    cancel(); // 取消任务
+                    cancel();
                     players.forEach(player -> player.sendMessage(ChatColor.GREEN + "游戏开始!"));
-                    // 此处可调用开始比赛的相关逻辑
+                    startGame(); // 调用比赛开始逻辑
                 }
             }
         }.runTaskTimer(Bukkit.getPluginManager().getPlugin("TowerDefense"), 0, 20); // 每秒更新
     }
+
+    // 游戏开始逻辑
+    public void startGame() {
+        // 在此处添加游戏开始具体逻辑
+        // 例如，初始化地图、传送玩家、设置比赛状态等
+    }
+
 
     public void cancelCountdown() {
         if (arenaPreStartTimer != null) {

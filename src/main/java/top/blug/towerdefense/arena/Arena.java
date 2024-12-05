@@ -11,7 +11,7 @@ public class Arena {
     private int maxPlayer;
     private final String material;
 
-    public Arena(String mapName, int minPlayer, int maxPlayer, String material) {
+    public Arena(String mapName, String material, int minPlayer, int maxPlayer) {
         this.mapName = mapName;
         this.minPlayer = minPlayer;
         this.maxPlayer = maxPlayer;
@@ -25,7 +25,7 @@ public class Arena {
             int minPlayer = config.getInt(mapName + ".min-player");
             int maxPlayer = config.getInt(mapName + ".max-player");
             String material = config.getString(mapName + ".material", "BRICKS");
-            Arena arena = new Arena(mapName, minPlayer, maxPlayer, material); // 创建 Arena 对象
+            Arena arena = new Arena(mapName, material, minPlayer, maxPlayer); // 创建 Arena 对象
             arenaList.add(arena); // 加入到列表中
         }
         return arenaList; // 返回加载的 Arena 列表

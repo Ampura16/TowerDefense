@@ -23,9 +23,7 @@ public class TDCommand implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.AQUA + "==============================");
-            sender.sendMessage(ChatColor.AQUA + "TowerDefense - 指令帮助");
-            sender.sendMessage(ChatColor.AQUA + "==============================");
+            printConsoleHelpMessages(sender);
             return true;
         }
 
@@ -39,60 +37,71 @@ public class TDCommand implements CommandExecutor, Listener {
         switch (args[0].toLowerCase()) {
             case "help":
                 printPlayerHelpMessages(player);
-                return true;
+                break;
 
             case "create":
-                if (args.length < 4 || args.length > 5) {
-                    player.sendMessage(ChatColor.RED + "用法: /td create <地图名称> <最小玩家数> <最大玩家数> [材质（可选）]");
-                    return true;
-                }
-                String mapName = args[1];
-                int minPlayer;
-                int maxPlayer;
-                String materialName = (args.length == 5) ? args[4].toUpperCase() : "BRICKS";
-
-                try {
-                    minPlayer = Integer.parseInt(args[2]);
-                    maxPlayer = Integer.parseInt(args[3]);
-                } catch (NumberFormatException e) {
-                    player.sendMessage(ChatColor.RED + "最小玩家数和最大玩家数必须是整数.");
-                    return true;
-                }
-
-                mapManager.createMap(player, mapName, minPlayer, maxPlayer, materialName);
-                return true;
+                handleCreateCommand(player, args);
+                break;
 
             case "remove":
-                if (args.length < 2) {
-                    player.sendMessage(ChatColor.RED + "用法: /td remove <地图名称>");
-                    return true;
-                }
-                String mapToRemove = args[1];
-                mapManager.removeMap(player, mapToRemove);
-                return true;
+                handleRemoveCommand(player, args);
+                break;
 
             case "gui":
-                SelectMapGUI selectMapGUI = new SelectMapGUI(mapManager.getArenaList(), plugin.getConfig());
-                selectMapGUI.openSelectMapGUI(player); // 打开选择地图的 GUI
-                return true;
+                new SelectMapGUI(mapManager.getArenaList(), plugin.getConfig()).openSelectMapGUI(player);
+                break;
 
             case "leave":
                 mapManager.removePlayerFromQueue(player);
-                return true;
+                break;
 
             case "maplist":
                 mapManager.listMaps(player);
-                return true;
+                break;
 
-                case "reload":
-                mapManager.reloadConfigs((Player) sender); // 传递发送者作为 Player
-                return true;
+            case "reload":
+                if (player.hasPermission("towerdefense.reload")) {
+                    mapManager.reloadConfigs(player);
+                    player.sendMessage(ChatColor.GREEN + "插件配置已重载.");
+                } else {
+                    player.sendMessage(ChatColor.RED + "你没有权限执行此命令.");
+                }
+                break;
 
             default:
-                sender.sendMessage(ChatColor.GOLD + "未知的命令,请查看指令帮助.");
+                player.sendMessage(ChatColor.GOLD + "未知的命令,请查看指令帮助.");
                 printPlayerHelpMessages(player);
-                return true;
         }
+        return true;
+    }
+
+    // create子命令
+    private void handleCreateCommand(Player player, String[] args) {
+        if (args.length < 4 || args.length > 5) {
+            player.sendMessage(ChatColor.RED + "用法: /td create <地图名称> <最小玩家数> <最大玩家数> [材质（可选）]");
+            return;
+        }
+        String mapName = args[1];
+        try {
+            int minPlayer = Integer.parseInt(args[2]);
+            int maxPlayer = Integer.parseInt(args[3]);
+            String materialName = (args.length == 5) ? args[4].toUpperCase() : "BRICKS";
+            mapManager.createMap(player, mapName, materialName, minPlayer, maxPlayer);
+            player.sendMessage(ChatColor.GREEN + "地图创建成功!");
+        } catch (NumberFormatException e) {
+            player.sendMessage(ChatColor.RED + "最小玩家数和最大玩家数必须是整数.");
+        }
+    }
+
+    // remove子命令
+    private void handleRemoveCommand(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(ChatColor.RED + "用法: /td remove <地图名称>");
+            return;
+        }
+        String mapToRemove = args[1];
+        mapManager.removeMap(player, mapToRemove);
+        player.sendMessage(ChatColor.GREEN + "地图 " + mapToRemove + " 已被移除.");
     }
 
     private void printPlayerHelpMessages(Player player) {
@@ -105,4 +114,11 @@ public class TDCommand implements CommandExecutor, Listener {
         player.sendMessage(ChatColor.GOLD + "/td reload - 重载插件配置");
         player.sendMessage(ChatColor.AQUA + "===============================================");
     }
+
+    private void printConsoleHelpMessages(CommandSender sender) {
+        sender.sendMessage(ChatColor.AQUA + "==============================");
+        sender.sendMessage(ChatColor.AQUA + "TowerDefense - 指令帮助");
+        sender.sendMessage(ChatColor.AQUA + "==============================");
+    }
+
 }

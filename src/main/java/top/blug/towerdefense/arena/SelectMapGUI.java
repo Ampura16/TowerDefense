@@ -41,24 +41,26 @@ public class SelectMapGUI {
 
     // 创建地图项
     private ItemStack createMapItem(Arena arena) {
-        Material material = Material.getMaterial(arena.getMaterial()); // 根据材质名称获取 Material
-        if (material == null) {
-            material = Material.BRICKS; // 如果材质无效，使用默认材质
-        }
-
-        ItemStack mapIcon = new ItemStack(material); // 使用指定材质
+        Material material = getValidMaterial(arena.getMaterial(), Material.BRICKS);
+        ItemStack mapIcon = new ItemStack(material);
         ItemMeta meta = mapIcon.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', arena.getName())); // 设置地图名称
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', arena.getName()));
             List<String> lore = List.of(
                     ChatColor.GRAY + "最小玩家数: " + arena.getMinPlayer(),
                     ChatColor.GRAY + "最大玩家数: " + arena.getMaxPlayer(),
                     ChatColor.GREEN + "点击加入该地图队列"
             );
-            meta.setLore(lore); // 设置物品描述
-            mapIcon.setItemMeta(meta); // 将 meta 设回物品
+            meta.setLore(lore);
+            mapIcon.setItemMeta(meta);
         }
         return mapIcon;
+    }
+
+    // 错误检查
+    private Material getValidMaterial(String materialName, Material defaultMaterial) {
+        Material material = Material.getMaterial(materialName.toUpperCase());
+        return (material != null) ? material : defaultMaterial;
     }
 
     // 更新地图列表

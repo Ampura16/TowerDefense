@@ -35,7 +35,7 @@ public class MapManager {
     }
 
     // 创建地图配置
-    public void createMap(Player player, String mapName, int minPlayer, int maxPlayer, String materialName) {
+    public void createMap(Player player, String mapName, String materialName, int minPlayer, int maxPlayer) {
         if (arenasConfig.contains(mapName)) {
             player.sendMessage(pluginPrefix + ChatColor.RED + " 地图名称已存在,请使用其他名称.");
             return;
@@ -46,10 +46,8 @@ public class MapManager {
             return;
         }
 
-        // 设置地图基本信息
-        arenasConfig.set(mapName + ".material", materialName);
-        arenasConfig.set(mapName + ".min-player", minPlayer);
-        arenasConfig.set(mapName + ".max-player", maxPlayer);
+        // 正确设置地图配置
+        setArenaCfgToFile(mapName, materialName, minPlayer, maxPlayer);
 
         try {
             arenasConfig.save(arenasFile);
@@ -60,9 +58,17 @@ public class MapManager {
         }
 
         // 将新地图添加到 arenaList
-        arenaList.add(new Arena(mapName, minPlayer, maxPlayer, materialName));
+        arenaList.add(new Arena(mapName, materialName, minPlayer, maxPlayer));
         player.sendMessage(pluginPrefix + ChatColor.GREEN + " 地图 " + mapName + " 创建成功.");
         player.sendMessage(pluginPrefix + ChatColor.GREEN + " 最小玩家数: " + minPlayer + ChatColor.GREEN + " ; " + ChatColor.GREEN + "最大玩家数: " + maxPlayer);
+    }
+
+    // 私有方法写入地图配置
+    private void setArenaCfgToFile(String mapName, String materialName, int minPlayer, int maxPlayer) {
+        arenasConfig.set(mapName + ".material", materialName);
+        arenasConfig.set(mapName + ".min-player", minPlayer);
+        arenasConfig.set(mapName + ".max-player", maxPlayer);
+        System.out.println(pluginPrefix + ChatColor.DARK_GREEN + " [DEBUG] 配置保存: " + mapName + ".material=" + materialName);
     }
 
     // 列出地图
@@ -88,6 +94,7 @@ public class MapManager {
         }
 
         arenasConfig.set(mapName, null);
+        System.out.println("删除地图配置: " + mapName);
 
         try {
             arenasConfig.save(arenasFile);
@@ -113,8 +120,8 @@ public class MapManager {
         for (String mapName : arenasConfig.getKeys(false)) {
             int minPlayer = arenasConfig.getInt(mapName + ".min-player");
             int maxPlayer = arenasConfig.getInt(mapName + ".max-player");
-            String material = arenasConfig.getString(mapName + ".material", "BRICKS");
-            Arena arena = new Arena(mapName, minPlayer, maxPlayer, material);
+            String materialName = arenasConfig.getString(mapName + ".material", "BRICKS");
+            Arena arena = new Arena(mapName, materialName, minPlayer, maxPlayer);
             arenaList.add(arena);
             // System.out.println("加载地图: " + mapName); // 添加调试信息
         }
