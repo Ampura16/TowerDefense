@@ -1,6 +1,6 @@
 name: MobArena
 version: '${project.version}'
-main: top.blug.mobarena.mobarena.Main
+main: top.blug.ampura16.mobarena.Main
 api-version: 1.21
 
 commands:

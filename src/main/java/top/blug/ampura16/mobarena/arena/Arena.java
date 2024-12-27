@@ -1,4 +1,4 @@
-package top.blug.mobarena.mobarena.arena;
+package top.blug.ampura16.mobarena.arena;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
