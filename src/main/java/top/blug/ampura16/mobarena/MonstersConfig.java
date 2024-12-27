@@ -1,4 +1,4 @@
-package top.blug.mobarena.mobarena;
+package top.blug.ampura16.mobarena;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;

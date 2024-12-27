@@ -1,10 +1,10 @@
-package top.blug.mobarena.mobarena.arena;
+package top.blug.ampura16.mobarena.arena;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import top.blug.mobarena.mobarena.Main;
+import top.blug.ampura16.mobarena.Main;
 
 public class MAAnotherListeners implements Listener {
 

@@ -1,4 +1,4 @@
-package top.blug.mobarena.mobarena.command;
+package top.blug.ampura16.mobarena.command;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
@@ -6,9 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import top.blug.mobarena.mobarena.arena.MapManager;
-import top.blug.mobarena.mobarena.arena.SelectMapGUI;
-import top.blug.mobarena.mobarena.Main;
+import top.blug.ampura16.mobarena.arena.MapManager;
+import top.blug.ampura16.mobarena.arena.SelectMapGUI;
+import top.blug.ampura16.mobarena.Main;
 
 import java.util.ArrayList;
 import java.util.Arrays;

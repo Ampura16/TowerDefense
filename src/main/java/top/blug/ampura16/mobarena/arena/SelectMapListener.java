@@ -1,4 +1,4 @@
-package top.blug.mobarena.mobarena.arena;
+package top.blug.ampura16.mobarena.arena;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import top.blug.mobarena.mobarena.Main;
+import top.blug.ampura16.mobarena.Main;
 
 import java.util.List;
 

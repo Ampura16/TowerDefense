@@ -1,13 +1,13 @@
-package top.blug.mobarena.mobarena;
+package top.blug.ampura16.mobarena;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import top.blug.mobarena.mobarena.arena.*;
-import top.blug.mobarena.mobarena.command.MACommand;
-import top.blug.mobarena.mobarena.command.MATabCompleter;
+import top.blug.ampura16.mobarena.arena.*;
+import top.blug.ampura16.mobarena.command.MACommand;
+import top.blug.ampura16.mobarena.command.MATabCompleter;
 
 import java.io.File;
 import java.io.IOException;

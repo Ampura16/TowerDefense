@@ -1,4 +1,4 @@
-package top.blug.mobarena.mobarena.command;
+package top.blug.ampura16.mobarena.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
