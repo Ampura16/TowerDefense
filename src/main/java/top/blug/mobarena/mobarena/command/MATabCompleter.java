@@ -1,4 +1,4 @@
-package top.blug.towerdefense.command;
+package top.blug.mobarena.mobarena.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TDTabCompleter implements TabCompleter {
+public class MATabCompleter implements TabCompleter {
 
     private final List<String> commandList = Arrays.asList("help", "gui", "leave", "create", "remove", "maplist", "reload");
 

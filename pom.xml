@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.blug</groupId>
-    <artifactId>TowerDefense</artifactId>
+    <artifactId>MobArena</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Towerdefense</name>
+    <name>MobArena</name>
 
     <properties>
         <java.version>1.8</java.version>

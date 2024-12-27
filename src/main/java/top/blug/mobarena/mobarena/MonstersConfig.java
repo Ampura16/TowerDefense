@@ -1,4 +1,4 @@
-package top.blug.towerdefense;
+package top.blug.mobarena.mobarena;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;

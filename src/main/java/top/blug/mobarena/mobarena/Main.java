@@ -1,15 +1,13 @@
-package top.blug.towerdefense;
+package top.blug.mobarena.mobarena;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-import top.blug.towerdefense.command.TDCommand;
-import top.blug.towerdefense.command.TDTabCompleter;
-import top.blug.towerdefense.arena.Arena;
-import top.blug.towerdefense.arena.MapManager;
-import top.blug.towerdefense.arena.SelectMapListener;
+import top.blug.mobarena.mobarena.arena.*;
+import top.blug.mobarena.mobarena.command.MACommand;
+import top.blug.mobarena.mobarena.command.MATabCompleter;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,34 +19,47 @@ public final class Main extends JavaPlugin {
 
     private String pluginPrefix;
     private MonstersConfig monstersConfig;
-    private TDCommand tdCommand;
+    private MACommand maCommand;
     private File arenasFile;
     private FileConfiguration arenasConfig;
     private List<Arena> arenaList; // 存储所有地图的列表
     private HashMap<UUID, Arena> playerArenaMap; // 存储玩家与地图的对应关系
     private MapManager mapManager;
+    private MAQueueUtils queueUtils;
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-        // 先读取 pluginPrefix
-        pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("plugin-prefix", "&2TowerDefense"));
-        printLoadMessage(); // 在获取了插件前缀后再打印加载消息
+        loadConfigurations(); // 封装配置加载过程
+        printLoadMessage();
+        setupComponents();
+        setupCommandsAndListeners();
+    }
 
+    private void loadConfigurations() {
+        saveDefaultConfig();
+        pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("plugin-prefix", "&2TowerDefense"));
+
+        createArenasConfig();
+    }
+
+    private void setupComponents() {
         monstersConfig = new MonstersConfig(this);
         monstersConfig.loadMonstersConfig();
 
-        createArenasConfig(); // 初始化和加载 arenas.yml 配置文件
-        playerArenaMap = new HashMap<>(); // 初始化玩家与地图关系的 HashMap
-        mapManager = new MapManager(this, arenasFile, arenasConfig, pluginPrefix); // 初始化 MapManager
-
-        // 注册命令
-        tdCommand = new TDCommand(this);
-        getCommand("towerdefense").setExecutor(tdCommand); // 注册命令执行器
-        getCommand("towerdefense").setTabCompleter(new TDTabCompleter()); // 注册命令补全器
-        getServer().getPluginManager().registerEvents(new SelectMapListener(this, mapManager.getArenaList(), pluginPrefix), this);
-
+        playerArenaMap = new HashMap<>();
+        mapManager = new MapManager(this, arenasFile, arenasConfig, pluginPrefix);
+        queueUtils = new MAQueueUtils(this);
     }
+
+    private void setupCommandsAndListeners() {
+        maCommand = new MACommand(this);
+        getCommand("mobarena").setExecutor(maCommand);
+        getCommand("mobarena").setTabCompleter(new MATabCompleter());
+        getServer().getPluginManager().registerEvents(new SelectMapListener(this, mapManager.getArenaList(), pluginPrefix), this);
+        getServer().getPluginManager().registerEvents(new MAQueueListener(this, mapManager, queueUtils), this);
+        getServer().getPluginManager().registerEvents(new MAAnotherListeners(this), this);
+    }
+
 
     @Override
     public void onDisable() {
@@ -78,13 +89,11 @@ public final class Main extends JavaPlugin {
                 arenasFile.getParentFile().mkdirs();
                 arenasFile.createNewFile();
             } catch (IOException e) {
-                getLogger().severe("无法创建 arenas.yml 文件!");
+                getLogger().severe("无法创建 arenas.yml 文件.");
             }
         }
         arenasConfig = YamlConfiguration.loadConfiguration(arenasFile);
-
-        // 使用 Arena 类的方法加载地图信息
-        arenaList = Arena.loadArenasFromConfig(arenasConfig); // 调用静态方法加载 Arena 列表
+        arenaList = Arena.loadArenasFromConfig(arenasConfig);
     }
 
     // 获取 MapManager 实例
@@ -103,4 +112,9 @@ public final class Main extends JavaPlugin {
     public String getPluginPrefix() {
         return pluginPrefix;
     }
+
+    public MAQueueUtils getQueueUtils() {
+        return queueUtils;
+    }
+
 }

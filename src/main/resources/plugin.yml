@@ -1,9 +1,9 @@
-name: TowerDefense
+name: MobArena
 version: '${project.version}'
-main: top.blug.towerdefense.Main
+main: top.blug.mobarena.mobarena.Main
 api-version: 1.21
 
 commands:
-  towerdefense:
-    description: TowerDefense插件主命令
-    aliases: [td]
+  mobarena:
+    description: MobArena 插件主命令
+    aliases: [ma]

@@ -1,4 +1,4 @@
-package top.blug.towerdefense.arena;
+package top.blug.mobarena.mobarena.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,13 +10,13 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 
-public class TDArenaPrepareStartEvent extends Event {
+public class MAArenaPrepareStartEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private final Arena arena;
     private final List<Player> players; // 队列中的玩家
     private BukkitTask arenaPreStartTimer; // 倒计时任务
 
-    public TDArenaPrepareStartEvent(Arena arena, List<Player> players) {
+    public MAArenaPrepareStartEvent(Arena arena, List<Player> players) {
         this.arena = arena;
         this.players = players;
     }
